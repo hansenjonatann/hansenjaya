@@ -16,7 +16,7 @@ const ProductPage = () => {
   }, []);
   return (
     <>
-      <div className="flex h-screen bg-gray-200">
+      <div className="flex min-h-screen bg-gray-200">
         <Sidebar />
         <div className="flex-1 p-6 mt-12">
           <div className="flex justify-between">

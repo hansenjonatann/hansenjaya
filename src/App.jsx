@@ -7,14 +7,12 @@ import ProductCreatePage from "./pages/products/create";
 const App = () => {
   return (
     <>
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<LoginPage />} />
-          <Route path="/register" element={<RegisterPage />} />
-          <Route path="/product" element={<ProductPage />} />
-          <Route path="/product/create" element={<ProductCreatePage />} />
-        </Routes>
-      </BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/product" element={<ProductPage />} />
+        <Route path="/product/create" element={<ProductCreatePage />} />
+      </Routes>
     </>
   );
 };
