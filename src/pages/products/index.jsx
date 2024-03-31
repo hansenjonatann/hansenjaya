@@ -1,6 +1,7 @@
 import Sidebar from "../../components/Sidebar";
 import api from "../../api";
 import { useEffect, useState } from "react";
+import {Link } from "react-router-dom"
 
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
@@ -21,12 +22,12 @@ const ProductPage = () => {
         <div className="flex-1 p-6 mt-12">
           <div className="flex justify-between">
             <h2 className="text-xl font-semibold mb-4">Product List</h2>
-            <a
-              href="/product/create"
+            <Link
+              to="/product/create"
               className="bg-blue-500 px-4 py-2 rounded shadow-md items-center text-white font-bold"
             >
               + Create new Product
-            </a>
+            </Link>
           </div>
           <div className="overflow-x-auto">
             <table className="table-auto w-full border-collapse text-center">
