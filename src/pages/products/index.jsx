@@ -1,7 +1,7 @@
 import Sidebar from "../../components/Sidebar";
 import api from "../../api";
 import { useEffect, useState } from "react";
-
+import { Link } from "react-router-dom";
 const ProductPage = () => {
   const [products, setProducts] = useState([]);
 
@@ -77,6 +77,17 @@ const ProductPage = () => {
                             .replace(/\.00$/, "")}
                         </td>
                         <td className="px-4 py-2">{product.stock}</td>
+                        <td className="text-center flex gap-2">
+                          <Link
+                            to={`/product/edit/${product.id}`}
+                            className="bg-green-600 px-2 py-2 text-white font-bold rounded "
+                          >
+                            EDIT
+                          </Link>
+                          <button className="bg-red-700 text-white font-bold px-3 rounded-sm shadow border-0">
+                            DELETE
+                          </button>
+                        </td>
                       </tr>
                     </>
                   ))

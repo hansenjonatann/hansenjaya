@@ -1,4 +1,27 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api";
+
 const LoginPage = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [errors, setErrors] = useState([]);
+
+  const navigate = useNavigate();
+
+  const loginProcess = async (e) => {
+    e.preventDefault();
+
+    const formData = new FormData();
+
+    formData.append("username", username);
+    formData.append("password", password);
+
+    await api.post("/api/login", formData).then(() => {
+      navigate("/product");
+    });
+  };
   return (
     <>
       <div className="flex justify-center items-center min-h-screen">
@@ -6,7 +29,7 @@ const LoginPage = () => {
           <div className="bg-white p-8 rounded shadow-lg w-96 mx-auto">
             <h2 className="text-2xl text-center font-semibold mb-4">Login</h2>
 
-            <form action="">
+            <form onSubmit={loginProcess}>
               <div className="mb-4">
                 <label
                   htmlFor="username"
@@ -17,10 +40,14 @@ const LoginPage = () => {
                 <input
                   type="text"
                   id="username"
+                  onChange={(e) => setUsername(e.target.value)}
                   name="username"
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="Your Username"
                 />
+                {errors.username && (
+                  <p className="text-red-500 font-bold">{errors.username[0]}</p>
+                )}
               </div>
               <div className="mb-4">
                 <label
@@ -33,14 +60,19 @@ const LoginPage = () => {
                   type="password"
                   id="password"
                   name="password"
+                  onChange={(e) => setPassword(e.target.value)}
                   className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="Your Password"
                 />
+
+                {errors.password && (
+                  <p className="text-red-500 font-bold">{errors.password[0]}</p>
+                )}
               </div>
-              <div class="mb-4">
+              <div className="mb-4">
                 <button
                   type="submit"
-                  class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+                  className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
                 >
                   Login
                 </button>
@@ -48,9 +80,9 @@ const LoginPage = () => {
               <div className="mb-4">
                 <p className="text-center font-semibold">
                   Don't have an account?{" "}
-                  <a href="/register" className="text-blue-500">
+                  <Link to="/register" className="text-blue-500">
                     Register
-                  </a>
+                  </Link>
                 </p>
               </div>
             </form>
