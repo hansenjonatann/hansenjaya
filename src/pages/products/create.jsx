@@ -1,24 +1,23 @@
+import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 
-import api from "../../api";
-
 const ProductCreatePage = () => {
+  const [name, setName] = useState();
+  const [pricePerWholesaler, setPricePerWholesaler] = useState();
+  const [pricePerRetail, setPricePerRetail] = useState();
+  const [stockPerWhosaler, setStockPerWhosaler] = useState();
+  const [stockPerRetail, setStockPerRetail] = useState();
+  const [category, setCategory] = useState();
+  const [unit, setUnit] = useState();
+  const [description, setDescription] = useState();
   const [categories, setCategories] = useState([]);
   const [units, setUnits] = useState([]);
-
-  const [name, setName] = useState("");
-  const [image, setImage] = useState("");
-  const [category, setCategory] = useState("");
-  const [unit, setUnit] = useState("");
-  const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-
   const [errors, setErrors] = useState([]);
+  const [image, setImage] = useState(null);
 
   const navigate = useNavigate();
 
@@ -29,43 +28,55 @@ const ProductCreatePage = () => {
   const storeProduct = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
-    formData.append("name", name);
-    formData.append("image", image);
-    formData.append("category", category);
-    formData.append("unit", unit);
-    formData.append("description", description);
-    formData.append("price", price);
-    formData.append("stock", stock);
-
-    await api
-      .post("/api/products", formData)
+    await axios
+      .post("http://localhost:5001/api/v1/products/store", {
+        name: name,
+        price_per_wholesaler: pricePerWholesaler,
+        price_per_retail: pricePerRetail,
+        stock_per_whosaler: stockPerWhosaler,
+        stock_per_retail: stockPerRetail,
+        category_id: category,
+        unit_id: unit,
+        description: description,
+        image: image,
+      })
       .then(() => {
         navigate("/product");
+        update();
       })
       .catch((error) => {
         setErrors(error.response.data);
-        console.log(error.response.data);
+        console.log(error);
       });
   };
 
   const fetchCategories = async () => {
-    await api
-      .get("/api/categories")
-      .then((response) => setCategories(response.data.data));
+    try {
+      await axios
+        .get("http://localhost:5001/api/v1/categories")
+        .then((response) => setCategories(response.data.data))
+        .catch((err) => setErrors(err.response.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const fetchUnits = async () => {
-    await api
-      .get("/api/units")
-      .then((response) => setUnits(response.data.data));
+    try {
+      await axios
+        .get("http://localhost:5001/api/v1/units")
+        .then((response) => setUnits(response.data.data))
+        .catch((error) => setErrors(error.response.data));
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   useEffect(() => {
     fetchCategories();
     fetchUnits();
   }, []);
+
   return (
     <>
       <div className="flex min-h-screen bg-gray-200">
@@ -76,22 +87,6 @@ const ProductCreatePage = () => {
           <div className="overflow-x-auto">
             <div className="bg-white p-8 rounded shadow-lg w-full">
               <form onSubmit={storeProduct}>
-                <div className="mb-4">
-                  <label
-                    htmlFor="code"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
-                    Product Code
-                  </label>
-                  <input
-                    type="text"
-                    id="code"
-                    name="username"
-                    className="w-full px-3 py-2 border rounded-md border-blue-500"
-                    disabled
-                  />
-                </div>
-
                 <div className="mb-4">
                   <label
                     htmlFor="name"
@@ -114,6 +109,94 @@ const ProductCreatePage = () => {
                     </p>
                   )}
                 </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="pricePerWholesaler"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Price Per Wholesaler
+                  </label>
+                  <input
+                    type="number"
+                    id="pricePerWholesaler"
+                    name="name"
+                    onChange={(e) => setPricePerWholesaler(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.pricePerWholesaler && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.pricePerWholesaler[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="pricerPerRetail"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Price Per Retail
+                  </label>
+                  <input
+                    type="number"
+                    id="pricePerRetail"
+                    name="retailPrice"
+                    onChange={(e) => setPricePerRetail(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.pricePerRetail && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.pricePerRetail[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="stockPerWhosaler"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Stock Per Whosaler
+                  </label>
+                  <input
+                    type="number"
+                    id="stockPerWhosaler"
+                    name="whosalerStock"
+                    onChange={(e) => setStockPerWhosaler(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.stockPerWhosaler && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.stockPerWhosaler[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="stockPerRetail"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Stock Per Retail
+                  </label>
+                  <input
+                    type="number"
+                    id="stockPerRetail"
+                    name="retailStock"
+                    onChange={(e) => setStockPerRetail(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.stockPerRetail && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.stockPerRetail[0]}
+                    </p>
+                  )}
+                </div>
 
                 <div className="mb-4">
                   <label
@@ -124,11 +207,10 @@ const ProductCreatePage = () => {
                   </label>
                   <input
                     type="file"
-                    onChange={handleFileChange}
                     id="image"
+                    onChange={(e) => handleFileChange(e.target.value)}
                     name="image"
                     className="w-full px-3 py-2 border rounded-md  border-blue-500"
-                    placeholder="product.jpg"
                     required
                   />
                   {errors.image && (
@@ -203,62 +285,19 @@ const ProductCreatePage = () => {
                   )}
                 </div>
 
-                <div className="mb-4">
-                  <label
-                    htmlFor="price"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
-                    Product Price
-                  </label>
-                  <input
-                    type="number"
-                    onChange={(e) => setPrice(e.target.value)}
-                    name="price"
-                    id="price"
-                    className="w-full border rounded-md focus:outline-none focus:border-blue-500 px-3 py-2"
-                  />
-                </div>
-                {errors.price && (
-                  <p className="mt-2 text-sm text-red-500 font-bold">
-                    {errors.price[0]}
-                  </p>
-                )}
-
-                <div className="mb-4">
-                  <label
-                    htmlFor="stock"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
-                    Product Stock
-                  </label>
-                  <input
-                    type="number"
-                    name="stock"
-                    onChange={(e) => setStock(e.target.value)}
-                    id="stock"
-                    className="w-full border rounded-md focus:outline-none focus:border-blue-500 px-3 py-2"
-                  />
-                </div>
-
-                {errors.stock && (
-                  <p className="mt-2 text-sm text-red-500 font-bold">
-                    {errors.stock[0]}
-                  </p>
-                )}
-
                 <div className="flex gap-2 items-center">
-                  <div class="mb-4">
+                  <div className="mb-4">
                     <a
                       href="/product"
-                      class="w-full  bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:bg-blue-700"
+                      className="w-full  bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:bg-blue-700"
                     >
                       Cancel
                     </a>
                   </div>
-                  <div class="mb-4">
+                  <div className="mb-4">
                     <button
                       type="submit"
-                      class="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+                      className="w-full bg-blue-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
                     >
                       Create
                     </button>

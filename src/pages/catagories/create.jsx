@@ -1,10 +1,9 @@
+import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 
 import { useEffect, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
-
-import api from "../../api";
 
 const CategoryCreatePage = () => {
   const [name, setName] = useState("");
@@ -17,12 +16,11 @@ const CategoryCreatePage = () => {
   const storeCategory = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
-
-    await api
-      .post("/api/categories", formData)
+    await axios
+      .post("http://localhost:5001/api/v1/categories/store", {
+        name: name,
+        description: description,
+      })
       .then(() => navigate("/category"))
       .catch((error) => setErrors(error.response.data));
   };

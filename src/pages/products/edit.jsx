@@ -1,10 +1,9 @@
+import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 
 import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-
-import api from "../../api";
 
 const ProductEditPage = () => {
   const [categories, setCategories] = useState([]);
@@ -15,26 +14,33 @@ const ProductEditPage = () => {
   const [category, setCategory] = useState("");
   const [unit, setUnit] = useState("");
   const [description, setDescription] = useState("");
-  const [price, setPrice] = useState("");
-  const [stock, setStock] = useState("");
-
+  const [pricePerWholesaler, setPricePerWholesaler] = useState();
+  const [pricePerRetail, setPricePerRetail] = useState();
+  const [stockPerWhosaler, setStockPerWhosaler] = useState();
+  const [stockPerRetail, setStockPerRetail] = useState();
   const [errors, setErrors] = useState([]);
 
   const navigate = useNavigate();
 
-  const handleFileChange = (e) => {
-    setImage(e.target.files[0]);
-  };
+  // const handleFileChange = (e) => {
+  //   setImage(e.target.files[0]);
+  // };
 
   const { id } = useParams();
 
   const fetchDetailProduct = async () => {
-    await api.get(`/api/products/${id}`).then((response) => {
-      setName(response.data.data.name);
-      setDescription(response.data.data.description);
-      setPrice(response.data.data.price);
-      setStock(response.data.data.stock);
-    });
+    await axios
+      .get(`http://localhost:5001/api/v1/products/detail/${id}`)
+      .then((response) => {
+        setName(response.data.data.name);
+        setDescription(response.data.data.description);
+        setPricePerRetail(response.data.data.price_per_retail);
+        setPricePerWholesaler(response.data.data.price_per_wholesaler);
+        setStockPerRetail(response.data.data.stock_per_retail);
+        setStockPerWhosaler(response.data.data.stock_per_whosaler);
+        setCategory(response.data.data.category_id);
+        setImage(response.data.data.image);
+      });
   };
 
   const updateProduct = async (e) => {
@@ -54,27 +60,11 @@ const ProductEditPage = () => {
       <div className="flex min-h-screen bg-gray-200">
         <Sidebar />
         <div className="flex-1 p-6 ">
-          <h2 className="text-xl font-semibold mb-4">Create new Product</h2>
+          <h2 className="text-xl font-semibold mb-4">Edit Product</h2>
 
           <div className="overflow-x-auto">
             <div className="bg-white p-8 rounded shadow-lg w-full">
               <form>
-                <div className="mb-4">
-                  <label
-                    htmlFor="code"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
-                    Product Code
-                  </label>
-                  <input
-                    type="text"
-                    id="code"
-                    name="code"
-                    className="w-full px-3 py-2 border rounded-md border-blue-500"
-                    disabled
-                  />
-                </div>
-
                 <div className="mb-4">
                   <label
                     htmlFor="name"
@@ -85,16 +75,108 @@ const ProductEditPage = () => {
                   <input
                     type="text"
                     id="name"
-                    value={name}
                     name="name"
                     onChange={(e) => setName(e.target.value)}
                     className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
                     placeholder="Product Name"
+                    value={name}
                     required
                   />
                   {errors.name && (
                     <p className="mt-2 text-sm text-red-500 font-bold">
                       {errors.name[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="pricePerWholesaler"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Price Per Wholesaler
+                  </label>
+                  <input
+                    type="number"
+                    id="pricePerWholesaler"
+                    value={pricePerWholesaler}
+                    name="wholesalerPrice"
+                    onChange={(e) => setPricePerWholesaler(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.pricePerWholesaler && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.pricePerWholesaler[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="pricerPerRetail"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Price Per Retail
+                  </label>
+                  <input
+                    type="number"
+                    id="pricePerRetail"
+                    value={pricePerRetail}
+                    name="retailPrice"
+                    onChange={(e) => setPricePerRetail(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.pricePerRetail && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.pricePerRetail[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="stockPerWhosaler"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Stock Per Whosaler
+                  </label>
+                  <input
+                    type="number"
+                    id="stockPerWhosaler"
+                    name="whosalerStock"
+                    value={stockPerWhosaler}
+                    onChange={(e) => setStockPerWhosaler(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.stockPerWhosaler && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.stockPerWhosaler[0]}
+                    </p>
+                  )}
+                </div>
+                <div className="mb-4">
+                  <label
+                    htmlFor="stockPerRetail"
+                    className="block text-gray-700 text-sm font-bold mb-2"
+                  >
+                    Product Stock Per Retail
+                  </label>
+                  <input
+                    type="number"
+                    id="stockPerRetail"
+                    value={stockPerRetail}
+                    name="retailStock"
+                    onChange={(e) => setStockPerRetail(e.target.value)}
+                    className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="0"
+                    required
+                  />
+                  {errors.stockPerRetail && (
+                    <p className="mt-2 text-sm text-red-500 font-bold">
+                      {errors.stockPerRetail[0]}
                     </p>
                   )}
                 </div>
@@ -107,10 +189,11 @@ const ProductEditPage = () => {
                     Product Image
                   </label>
                   <input
-                    type="file"
-                    onChange={handleFileChange}
+                    type="text"
                     id="image"
+                    onChange={(e) => setImage(e.target.value)}
                     name="image"
+                    value={image}
                     className="w-full px-3 py-2 border rounded-md  border-blue-500"
                     placeholder="product.jpg"
                     required
@@ -133,6 +216,7 @@ const ProductEditPage = () => {
                     name="category"
                     onChange={(e) => setCategory(e.target.value)}
                     id="category"
+                    value={category}
                     className="w-full px-3 py-2 border rounded-md border-blue-500"
                   >
                     <option value="">Choose a category</option>
@@ -155,6 +239,7 @@ const ProductEditPage = () => {
                     name="unit"
                     id="unit"
                     onChange={(e) => setUnit(e.target.value)}
+                    value={unit}
                     className="w-full px-3 py-2 border rounded-md border-blue-500"
                   >
                     <option value="">Choose a unit</option>
@@ -188,64 +273,19 @@ const ProductEditPage = () => {
                   )}
                 </div>
 
-                <div className="mb-4">
-                  <label
-                    htmlFor="price"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
-                    Product Price
-                  </label>
-                  <input
-                    type="number"
-                    value={price}
-                    onChange={(e) => setPrice(e.target.value)}
-                    name="price"
-                    id="price"
-                    className="w-full border rounded-md focus:outline-none focus:border-blue-500 px-3 py-2"
-                  />
-                </div>
-                {errors.price && (
-                  <p className="mt-2 text-sm text-red-500 font-bold">
-                    {errors.price[0]}
-                  </p>
-                )}
-
-                <div className="mb-4">
-                  <label
-                    htmlFor="stock"
-                    className="block text-gray-700 text-sm font-bold mb-2"
-                  >
-                    Product Stock
-                  </label>
-                  <input
-                    type="number"
-                    name="stock"
-                    value={stock}
-                    onChange={(e) => setStock(e.target.value)}
-                    id="stock"
-                    className="w-full border rounded-md focus:outline-none focus:border-blue-500 px-3 py-2"
-                  />
-                </div>
-
-                {errors.stock && (
-                  <p className="mt-2 text-sm text-red-500 font-bold">
-                    {errors.stock[0]}
-                  </p>
-                )}
-
                 <div className="flex gap-2 items-center">
-                  <div class="mb-4">
+                  <div className="mb-4">
                     <a
                       href="/product"
-                      class="w-full  bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:bg-blue-700"
+                      className="w-full  bg-red-500 text-white font-bold py-2 px-4 rounded hover:bg-red-700 focus:outline-none focus:bg-blue-700"
                     >
                       Cancel
                     </a>
                   </div>
-                  <div class="mb-4">
+                  <div className="mb-4">
                     <button
                       type="submit"
-                      class="w-full bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
+                      className="w-full bg-green-500 text-white font-bold py-2 px-4 rounded hover:bg-blue-700 focus:outline-none focus:bg-blue-700"
                     >
                       Update
                     </button>

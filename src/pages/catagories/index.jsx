@@ -1,19 +1,21 @@
 import Sidebar from "../../components/Sidebar";
-import api from "../../api";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
+import axios from "axios";
 const CategoryPage = () => {
   const [categories, setCategories] = useState([]);
 
   const fetchDataCategories = async () => {
-    await api.get("/api/categories").then((response) => {
-      setCategories(response.data.data);
-      console.log(response.data);
-    });
+    await axios
+      .get("http://localhost:5001/api/v1/categories")
+      .then((response) => {
+        setCategories(response.data.data);
+        console.log(response.data);
+      });
   };
 
   const deleteCategory = async (id) => {
-    await api.delete(`/api/categories/delete/${id}`);
+    await axios.delete(`/api/categories/delete/${id}`);
     fetchDataCategories();
   };
 
@@ -38,10 +40,10 @@ const CategoryPage = () => {
             <table className="table-auto w-full  border-collapse text-center">
               <thead>
                 <tr className="bg-gray-200">
-                  <th className="px-4 py-2 text-left">#</th>
-                  <th className="px-4 py-2 text-left">Name</th>
-                  <th className="px-4 py-2 text-left">Descripton</th>
-                  <th className="px-4 py-2 text-left">Action</th>
+                  <th className="px-4 py-2 ">#</th>
+                  <th className="px-4 py-2 ">Name</th>
+                  <th className="px-4 py-2 ">Descripton</th>
+                  <th className="px-4 py-2 ">Action</th>
                 </tr>
               </thead>
               <tbody>

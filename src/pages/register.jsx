@@ -1,12 +1,13 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api";
+import axios from "axios";
 
 const RegisterPage = () => {
   const [name, setName] = useState();
   const [username, setUsername] = useState();
   const [email, setEmail] = useState();
   const [password, setPassword] = useState();
+  const [passwordConfirmation, setPasswordConfirmation] = useState();
 
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
@@ -14,23 +15,19 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
-
-    formData.append("name", name);
-    formData.append("username", username);
-    formData.append("email", email);
-    formData.append("password", password);
-
-    await api
-      .post("/api/register", formData)
+    await axios
+      .post("http://localhost:5001/api/v1/auth/register", {
+        name: name,
+        username: username,
+        email: email,
+        password: password,
+        passwordConfirmation: passwordConfirmation,
+      })
       .then(() => {
         navigate("/");
-        console.log("registered");
+        console.log("Registerd");
       })
-      .catch((error) => {
-        setErrors(error.response.data);
-        console.log(error.response.data);
-      });
+      .catch((error) => setErrors(error.response.data));
   };
   return (
     <>
@@ -123,6 +120,27 @@ const RegisterPage = () => {
                 {errors.password && (
                   <p className="mt-2 text-sm text-red-500 font-bold">
                     {errors.password[0]}
+                  </p>
+                )}
+              </div>
+              <div className="mb-4">
+                <label
+                  htmlFor="confirmationPassword"
+                  className="block text-gray-700 text-sm font-bold mb-2"
+                >
+                  Confirmation Password
+                </label>
+                <input
+                  type="password"
+                  onChange={(e) => setPasswordConfirmation(e.target.value)}
+                  name="confirmationPassword"
+                  id="confirmationPassword"
+                  className="w-full px-3 py-2 border rounded-md focus:outline-none focus:border-blue-500"
+                  placeholder="Input the password again for confirmation"
+                />
+                {errors.passwordConfirmation && (
+                  <p className="mt-2 text-sm text-red-500 font-bold">
+                    {errors.passwordConfirmation[0]}
                   </p>
                 )}
               </div>

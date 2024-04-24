@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import api from "../api";
+import axios from "axios";
 
 const LoginPage = () => {
   const [username, setUsername] = useState("");
@@ -12,15 +12,21 @@ const LoginPage = () => {
 
   const loginProcess = async (e) => {
     e.preventDefault();
-
-    const formData = new FormData();
-
-    formData.append("username", username);
-    formData.append("password", password);
-
-    await api.post("/api/login", formData).then(() => {
-      navigate("/product");
-    });
+    await axios
+      .post("http://localhost:5001/api/v1/auth/login", {
+        username: username,
+        password: password,
+      })
+      .then((response) => {
+        if (response.data.data.role.name === "Admin") {
+          navigate("/product");
+        } else if (response.data.data.role.name === "cashier") {
+          navigate("/cashier");
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((error) => setErrors(error.response.data));
   };
   return (
     <>

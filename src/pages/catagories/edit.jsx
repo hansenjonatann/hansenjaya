@@ -1,10 +1,9 @@
+import axios from "axios";
 import Sidebar from "../../components/Sidebar";
 
 import { useEffect, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
-
-import api from "../../api";
 
 const CategoryEditPage = () => {
   const [name, setName] = useState("");
@@ -17,25 +16,24 @@ const CategoryEditPage = () => {
   const { id } = useParams();
 
   const fetchDataCategory = async () => {
-    await api.get(`/api/categories/${id}`).then((response) => {
-      setName(response.data.data.name);
-      setDescription(response.data.data.description);
-    });
+    await axios
+      .get(`http://localhost:5001/api/v1/categories/detail/${id}`)
+      .then((response) => {
+        setName(response.data.data.name);
+        setDescription(response.data.data.description);
+      });
   };
 
   const updateCurrentCategory = async (e) => {
     e.preventDefault();
-    const formData = new FormData();
-    formData.append("name", name);
-    formData.append("description", description);
 
-    await api
-      .post(`/api/categories/update/${id}`, formData)
-      .then(() => {
-        navigate("/category");
-        console.log("success");
+    await axios
+      .put(`http://localhost:5001/api/v1/categories/update/${id}`, {
+        name: name,
+        description: description,
       })
-      .catch((error) => setErrors(error.response.data));
+      .then(() => navigate("/category"))
+      .catch((err) => setErrors(err.response.data));
   };
 
   useEffect(() => {

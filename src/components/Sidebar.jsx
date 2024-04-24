@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 const Sidebar = () => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
@@ -30,56 +30,64 @@ const Sidebar = () => {
     },
     {
       id: 5,
-      label: "Role",
-      url: "/role",
+      label: "Supplier",
+      url: "/supplier",
     },
     {
       id: 6,
       label: "Purchase",
       url: "/purchase",
     },
-    {
-      id: 7,
-      label: "User",
-      url: "/user",
-    },
   ];
 
+  const handleLogout = () => {
+    // Logika untuk proses logout
+    console.log("Logout clicked");
+  };
+
   return (
-    <div className={`md:w-64  bg-gray-800 ${isOpen ? "block " : "hidden"}`}>
-      <button onClick={toggleSidebar} className="toggle-btn">
-        {isOpen ? (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M6 18L18 6M6 6l12 12"
-            />
-          </svg>
-        ) : (
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M4 6h16M4 12h16M4 18h16"
-            />
-          </svg>
-        )}
-      </button>
+    <aside
+      className={`md:w-64 bg-gray-800 ${isOpen ? "block" : "hidden"} md:block`}
+    >
+      <div className="flex md:hidden">
+        <button
+          onClick={toggleSidebar}
+          className="toggle-btn p-3 focus:outline-none"
+        >
+          {isOpen ? (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-white"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M6 18L18 6M6 6l12 12"
+              />
+            </svg>
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-6 w-6 text-white"
+              fill="#ffffff"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth={2}
+                d="M4 6h16M4 12h16M4 18h16"
+              />
+            </svg>
+          )}
+        </button>
+      </div>
+
       <div className="p-6">
         <h2 className="text-white text-xl font-semibold">Hansen Jaya</h2>
         {/* Sidebar Content */}
@@ -91,9 +99,17 @@ const Sidebar = () => {
               </a>
             </li>
           ))}
+          <li>
+            <button
+              onClick={handleLogout}
+              className="text-white hover:text-gray-300"
+            >
+              Logout
+            </button>
+          </li>
         </ul>
       </div>
-    </div>
+    </aside>
   );
 };
 

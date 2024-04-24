@@ -10,6 +10,7 @@ import CategoryEditPage from "./pages/catagories/edit";
 import UnitPage from "./pages/units";
 import UnitCreatePage from "./pages/units/create";
 import UnitEditPage from "./pages/units/edit";
+import SupplierPage from "./pages/suppliers";
 
 const App = () => {
   return (
@@ -26,6 +27,7 @@ const App = () => {
         <Route path="/unit" element={<UnitPage />} />
         <Route path="/unit/create" element={<UnitCreatePage />} />
         <Route path="/unit/edit/:id" element={<UnitEditPage />} />
+        <Route path="/supplier" element={<SupplierPage />} />
       </Routes>
     </>
   );
