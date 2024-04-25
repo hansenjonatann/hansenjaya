@@ -29,17 +29,25 @@ const ProductCreatePage = () => {
     e.preventDefault();
 
     await axios
-      .post("http://localhost:5001/api/v1/products/store", {
-        name: name,
-        price_per_wholesaler: pricePerWholesaler,
-        price_per_retail: pricePerRetail,
-        stock_per_whosaler: stockPerWhosaler,
-        stock_per_retail: stockPerRetail,
-        category_id: category,
-        unit_id: unit,
-        description: description,
-        image: image,
-      })
+      .post(
+        "http://localhost:5001/api/v1/products/store",
+        {
+          name: name,
+          price_per_wholesaler: pricePerWholesaler,
+          price_per_retail: pricePerRetail,
+          stock_per_whosaler: stockPerWhosaler,
+          stock_per_retail: stockPerRetail,
+          category_id: category,
+          unit_id: unit,
+          description: description,
+          image: image,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      )
       .then(() => {
         navigate("/product");
         update();
@@ -208,7 +216,7 @@ const ProductCreatePage = () => {
                   <input
                     type="file"
                     id="image"
-                    onChange={(e) => handleFileChange(e.target.value)}
+                    onChange={handleFileChange}
                     name="image"
                     className="w-full px-3 py-2 border rounded-md  border-blue-500"
                     required

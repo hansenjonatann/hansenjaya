@@ -39,6 +39,14 @@ const ProductPage = () => {
       <div className="flex-1 p-6 mt-12 w-full">
         <div className="flex justify-between mb-4">
           <h2 className="text-xl font-semibold">Product List</h2>
+        </div>
+        <div className="flex my-5 justify-between border-b border-gray-200">
+          <Link
+            to="/import-excel"
+            className="bg-green-500 px-2 py-2 text-sm rounded shadow-md text-white font-bold"
+          >
+            Import From Excel
+          </Link>
           <Link
             to="/product/create"
             className="bg-blue-500 px-2 py-2 text-sm rounded shadow-md text-white font-bold"
@@ -58,7 +66,7 @@ const ProductPage = () => {
                 <th className="px-4 py-2">Stock Per Retail</th>
                 <th className="px-4 py-2">Category</th>
                 <th className="px-4 py-2">Unit</th>
-                <th className="px-4 py-2">Description</th>
+                {/* <th className="px-4 py-2">Description</th> */}
                 <th className="px-4 py-2">Action</th>
               </tr>
             </thead>
@@ -69,32 +77,42 @@ const ProductPage = () => {
                     key={index}
                     className="bg-white border-b border-gray-200 hover:bg-gray-100"
                   >
-                    <td className="px-4 py-2">{product.name}</td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 text-md border-t border-black">
+                      {product.name}
+                    </td>
+                    <td className="px-4 py-2 border-t border-black">
                       <img
                         src={product.image}
                         alt={product.name}
                         className=" object-cover rounded"
                       />
                     </td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 border-t border-black">
                       {product.price_per_wholesaler.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
                       })}
                     </td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 border-t border-black">
                       {product.price_per_retail.toLocaleString("id-ID", {
                         style: "currency",
                         currency: "IDR",
                       })}
                     </td>
-                    <td className="px-4 py-2">{product.stock_per_whosaler}</td>
-                    <td className="px-4 py-2">{product.stock_per_retail}</td>
-                    <td className="px-4 py-2">{product.category.name}</td>
-                    <td className="px-4 py-2">{product.unit.name}</td>
-                    <td className="px-4 py-2">{product.description}</td>
-                    <td className="px-4 py-2">
+                    <td className="px-4 py-2 border-t border-black">
+                      {product.stock_per_whosaler}
+                    </td>
+                    <td className="px-4 py-2 border-t border-black">
+                      {product.stock_per_retail}
+                    </td>
+                    <td className="px-4 py-2 border-t border-black">
+                      {product.category.name}
+                    </td>
+                    <td className="px-4 py-2 border-t border-black">
+                      {product.unit.name}
+                    </td>
+                    {/* <td className="px-4 py-2 border-t border-black">{product.description}</td> */}
+                    <td className="px-4 py-2 border-t border-black">
                       <div className="flex justify-center items-center">
                         <Link
                           to={`/product/edit/${product.id}`}

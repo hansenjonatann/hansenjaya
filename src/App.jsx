@@ -11,6 +11,7 @@ import UnitPage from "./pages/units";
 import UnitCreatePage from "./pages/units/create";
 import UnitEditPage from "./pages/units/edit";
 import SupplierPage from "./pages/suppliers";
+import ImportExcelPage from "./pages/import_excel";
 
 const App = () => {
   return (
@@ -28,6 +29,7 @@ const App = () => {
         <Route path="/unit/create" element={<UnitCreatePage />} />
         <Route path="/unit/edit/:id" element={<UnitEditPage />} />
         <Route path="/supplier" element={<SupplierPage />} />
+        <Route path="/import-excel" element={<ImportExcelPage />} />
       </Routes>
     </>
   );
