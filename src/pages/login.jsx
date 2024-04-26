@@ -13,7 +13,7 @@ const LoginPage = () => {
   const loginProcess = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:5001/api/v1/auth/login", {
+      .post("http://172.20.10.2:5001/api/v1/auth/login", {
         username: username,
         password: password,
       })

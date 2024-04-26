@@ -9,7 +9,7 @@ const UnitPage = () => {
   const fetchDataUnits = async () => {
     try {
       const response = await axios
-        .get("http://localhost:5001/api/v1/units")
+        .get("http://172.20.10.2:5001/api/v1/units")
         .then((response) => setUnits(response.data.data));
     } catch (err) {}
   };

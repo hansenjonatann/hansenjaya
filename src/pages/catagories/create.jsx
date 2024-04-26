@@ -17,7 +17,7 @@ const CategoryCreatePage = () => {
     e.preventDefault();
 
     await axios
-      .post("http://localhost:5001/api/v1/categories/store", {
+      .post("http://172.20.10.2:5001/api/v1/categories/store", {
         name: name,
         description: description,
       })

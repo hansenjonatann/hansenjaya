@@ -16,7 +16,7 @@ const RegisterPage = () => {
     e.preventDefault();
 
     await axios
-      .post("http://localhost:5001/api/v1/auth/register", {
+      .post("http://172.20.10.2:5001/api/v1/auth/register", {
         name: name,
         username: username,
         email: email,

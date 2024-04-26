@@ -17,7 +17,7 @@ const CategoryEditPage = () => {
 
   const fetchDataCategory = async () => {
     await axios
-      .get(`http://localhost:5001/api/v1/categories/detail/${id}`)
+      .get(`http://172.20.10.2:5001/api/v1/categories/detail/${id}`)
       .then((response) => {
         setName(response.data.data.name);
         setDescription(response.data.data.description);
@@ -28,7 +28,7 @@ const CategoryEditPage = () => {
     e.preventDefault();
 
     await axios
-      .put(`http://localhost:5001/api/v1/categories/update/${id}`, {
+      .put(`http://172.20.10.2:5001/api/v1/categories/update/${id}`, {
         name: name,
         description: description,
       })

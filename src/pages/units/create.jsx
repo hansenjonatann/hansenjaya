@@ -16,7 +16,7 @@ const UnitCreatePage = () => {
   const storeUnit = async (e) => {
     e.preventDefault();
     await axios
-      .post("http://localhost:5001/api/v1/units/store", {
+      .post("http://172.20.10.2:5001/api/v1/units/store", {
         name: name,
         description: description,
       })

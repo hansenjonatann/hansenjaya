@@ -30,7 +30,7 @@ const ProductCreatePage = () => {
 
     await axios
       .post(
-        "http://localhost:5001/api/v1/products/store",
+        "http://172.20.10.2:5001/api/v1/products/store",
         {
           name: name,
           price_per_wholesaler: pricePerWholesaler,

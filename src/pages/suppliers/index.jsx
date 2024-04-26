@@ -9,7 +9,7 @@ const SupplierPage = () => {
   const fetchDataSuppliers = async () => {
     try {
       await axios
-        .get("http://localhost:5001/api/v1/suppliers")
+        .get("http://172.20.10.2:5001/api/v1/suppliers")
         .then((response) => setSuppliers(response.data.data));
     } catch (err) {}
   };

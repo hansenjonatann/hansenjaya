@@ -17,7 +17,7 @@ const UnitEditPage = () => {
 
   const fetchDataUnits = async () => {
     await axios
-      .get(`http://localhost:5001/api/v1/units/detail/${id}`)
+      .get(`http://172.20.10.2:5001/api/v1/units/detail/${id}`)
       .then((response) => {
         setName(response.data.data.name);
         setDescription(response.data.data.description);
@@ -27,7 +27,7 @@ const UnitEditPage = () => {
   const updateCurrentUnit = async (e) => {
     e.preventDefault();
     await axios
-      .put(`http://localhost:5001/api/v1/units/update/${id}`, {
+      .put(`http://172.20.10.2:5001/api/v1/units/update/${id}`, {
         name: name,
         description: description,
       })

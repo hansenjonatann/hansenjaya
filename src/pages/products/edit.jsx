@@ -30,7 +30,7 @@ const ProductEditPage = () => {
 
   const fetchDetailProduct = async () => {
     await axios
-      .get(`http://localhost:5001/api/v1/products/detail/${id}`)
+      .get(`http://172.20.10.2:5001/api/v1/products/detail/${id}`)
       .then((response) => {
         setName(response.data.data.name);
         setDescription(response.data.data.description);
@@ -46,13 +46,51 @@ const ProductEditPage = () => {
   const updateProduct = async (e) => {
     e.preventDefault();
 
-    const formData = new FormData();
+    try {
+      const response = await axios.put(
+        `http://172.20.10.2:5001/api/v1/products/update/${id}`,
+        {
+          name,
+          description,
+          price_per_retail: pricePerRetail,
+          price_per_wholesaler: pricePerWholesaler,
+          stock_per_retail: stockPerRetail,
+          stock_per_wholesaler: stockPerWholesaler,
+          category_id: category,
+          image,
+        },
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
 
-    formData.append("name", name);
+      console.log("Product updated:", response.data);
+      navigate("/product"); // Redirect to product list page after successful update
+    } catch (error) {
+      console.error("Failed to update product:", error);
+      if (error.response && error.response.data && error.response.data.errors) {
+        setErrors(error.response.data.errors);
+      }
+    }
   };
 
+  const fetchCategories = async () => {
+    await axios
+      .get("http://172.20.10.2:5001/api/v1/categories")
+      .then((response) => setCategories(response.data.data));
+  };
+
+  const fetchUnits = async () => {
+    await axios
+      .get("http://172.20.10.2:5001/api/v1/units")
+      .then((response) => setUnits(response.data.data));
+  };
   useEffect(() => {
     fetchDetailProduct();
+    fetchCategories();
+    fetchUnits();
   }, []);
 
   return (
@@ -64,7 +102,7 @@ const ProductEditPage = () => {
 
           <div className="overflow-x-auto">
             <div className="bg-white p-8 rounded shadow-lg w-full">
-              <form>
+              <form onSubmit={updateProduct}>
                 <div className="mb-4">
                   <label
                     htmlFor="name"
@@ -189,7 +227,7 @@ const ProductEditPage = () => {
                     Product Image
                   </label>
                   <input
-                    type="text"
+                    type="file"
                     id="image"
                     onChange={(e) => setImage(e.target.value)}
                     name="image"

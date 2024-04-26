@@ -13,7 +13,7 @@ const ProductPage = () => {
 
       // Kirim permintaan GET dengan header yang disertakan
       const response = await axios.get(
-        "http://localhost:5001/api/v1/products",
+        "http://172.20.10.2:5001/api/v1/products",
         {
           headers: {
             Authorization: "",
@@ -88,16 +88,10 @@ const ProductPage = () => {
                       />
                     </td>
                     <td className="px-4 py-2 border-t border-black">
-                      {product.price_per_wholesaler.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
+                      {product.price_per_wholesaler}
                     </td>
                     <td className="px-4 py-2 border-t border-black">
-                      {product.price_per_retail.toLocaleString("id-ID", {
-                        style: "currency",
-                        currency: "IDR",
-                      })}
+                      {product.price_per_retail}
                     </td>
                     <td className="px-4 py-2 border-t border-black">
                       {product.stock_per_whosaler}
@@ -106,10 +100,10 @@ const ProductPage = () => {
                       {product.stock_per_retail}
                     </td>
                     <td className="px-4 py-2 border-t border-black">
-                      {product.category.name}
+                      {product.category_id}
                     </td>
                     <td className="px-4 py-2 border-t border-black">
-                      {product.unit.name}
+                      {product.unit_id}
                     </td>
                     {/* <td className="px-4 py-2 border-t border-black">{product.description}</td> */}
                     <td className="px-4 py-2 border-t border-black">

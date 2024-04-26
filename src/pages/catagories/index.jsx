@@ -7,7 +7,7 @@ const CategoryPage = () => {
 
   const fetchDataCategories = async () => {
     await axios
-      .get("http://localhost:5001/api/v1/categories")
+      .get("http://172.20.10.2:5001/api/v1/categories")
       .then((response) => {
         setCategories(response.data.data);
         console.log(response.data);
